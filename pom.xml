@@ -1,0 +1,224 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>onebusaway-nyc</artifactId>
+        <groupId>org.onebusaway</groupId>
+        <version>2.2.0-SNAPSHOT</version>
+    </parent>
+    <groupId>org.onebusaway</groupId>
+    <artifactId>onebusaway-voicexml</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>onebusaway-voicexml</name>
+    
+    <repositories>
+                <repository>
+            <id>nyc-cache</id>
+            <url>http://build.staging.obanyc.com/archiva/repository/internal/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>releases.staging.obanyc.com</id>
+            <url>http://build.staging.obanyc.com/archiva/repository/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        
+    </repositories>
+
+    	<dependencies>
+
+		<!-- OneBusAway Dependencies -->
+		<dependency>
+			<groupId>org.onebusaway</groupId>
+			<artifactId>onebusaway-nyc-presentation</artifactId>
+			<version>2.2.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.onebusaway</groupId>
+			<artifactId>onebusaway-nyc-transit-data</artifactId>
+			<version>2.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.onebusaway</groupId>
+			<artifactId>onebusaway-realtime-api</artifactId>
+			<version>${onebusaway.app-modules.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.onebusaway</groupId>
+			<artifactId>onebusaway-nyc-api-core</artifactId>
+			<version>2.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.onebusaway</groupId>
+			<artifactId>onebusaway-nyc-util</artifactId>
+			<version>2.2.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.dmurph</groupId>
+			<artifactId>JGoogleAnalyticsTracker</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>postgresql</groupId> <artifactId>postgresql</artifactId> 
+			</dependency> -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewritefilter</artifactId>
+			<version>3.2.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>apache-log4j-extras</artifactId>
+		</dependency>
+    	</dependencies>
+
+	<build>
+		<finalName>onebusaway-voicexml</finalName>
+		<plugins>
+                    <!--
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<prefix>git</prefix>
+					<dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat>
+					<verbose>true</verbose>
+					<skipPoms>false</skipPoms>
+					<generateGitPropertiesFile>false</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>src/main/resources/git.properties</generateGitPropertiesFilename>
+					<gitDescribe>
+						<skip>false</skip>
+						<always>true</always>
+						<abbrev>7</abbrev>
+						<dirty>-dirty</dirty>
+						<forceLongFormat>false</forceLongFormat>
+					</gitDescribe>
+				</configuration>
+			</plugin>
+                        -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>${jetty.version}</version>
+				<configuration>
+					<contextPath>/</contextPath>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+			<!-- This tells eclipse to when to execute the git-commit plugin -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											pl.project13.maven
+										</groupId>
+										<artifactId>
+											git-commit-id-plugin
+										</artifactId>
+										<versionRange>
+											[2.1.2,)
+										</versionRange>
+										<goals>
+											<goal>revision</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute>
+											<runOnIncremental>true</runOnIncremental>
+											<runOnConfiguration>true</runOnConfiguration>
+										</execute>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+    </properties>
+</project>

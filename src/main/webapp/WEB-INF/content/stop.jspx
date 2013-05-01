@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2013 Kurt Raschke
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy of
+    the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+    License for the specific language governing permissions and limitations under
+    the License.
+
+-->
+
+<vxml xmlns="http://www.w3.org/2001/vxml" 
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" 
+      xmlns:s="/struts-tags"
+      version="2.1">
+    <jsp:directive.page contentType="application/voicexml+xml" />
+    <form id="stopResult">
+        <block>
+            <prompt>
+                <s:property value="stopResult.name" /><break />
+                <s:if test="%{stopResult.routesWithArrivals.size+stopResult.routesWithNoVehiclesEnRoute.size+stopResult.routesWithNoScheduledService.size==0}">
+                    No service is available at this stop.
+                </s:if>
+                <s:else>
+                    <s:if test="%{stopResult.routesWithArrivals.size&gt;0}">
+                        Buses en-route<break />
+                        <s:iterator value="stopResult.routesWithArrivals">
+                            <s:iterator value="directions">
+                                <s:property value="shortName" /><break strength="weak" /><s:property value="destination" /><break />
+                                <c:forEach var="distanceAway" items="${distanceAways}">
+                                    ${distanceAway}<break />
+                                </c:forEach>
+                            </s:iterator>
+                        </s:iterator>
+                    </s:if>
+
+                    <s:if test="%{stopResult.routesWithNoVehiclesEnRoute.size&gt;0}">
+                        <break />
+                        <emphasis>No buses en-route to this stop for</emphasis>
+                        <s:iterator value="stopResult.routesWithNoVehiclesEnRoute">
+                            <s:iterator value="directions">
+                                <s:property value="shortName" /> to <s:property value="destination" />
+                                <break />
+                            </s:iterator>
+                        </s:iterator>
+                        <emphasis level="reduced">Check back shortly for an update</emphasis>
+                    </s:if>
+
+                    <s:if test="%{stopResult.routesWithNoScheduledService.size&gt;0}">
+                        <break />
+                        No scheduled service at this time for:
+                        <s:iterator value="stopResult.routesWithNoScheduledService">
+                            <s:iterator value="directions">
+                                <s:property value="shortName" /><break />
+                            </s:iterator>
+                        </s:iterator>
+                    </s:if>
+                </s:else>
+
+                <!--
+                <s:if test="%{uniqueServiceAlertsForResults.size&gt;0}">
+                    <div class="alerts">
+                        <p>
+                            <strong>Service Alert:</strong>
+                        </p>
+                        <ul class="alerts">
+                    <c:forEach var="uniqueServiceAlert" items="${uniqueServiceAlertsForResults}">
+                        <li><c:out value="${uniqueServiceAlert}" escapeXml="false"/></li>
+                    </c:forEach>
+                </ul>
+            </div>
+                </s:if>
+                -->
+            </prompt>
+        </block>
+    </form>
+</vxml>

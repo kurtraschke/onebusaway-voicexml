@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2013 Kurt Raschke
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy of
+    the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+    License for the specific language governing permissions and limitations under
+    the License.
+
+-->
+<vxml xmlns="http://www.w3.org/2001/vxml" 
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" 
+      xmlns:s="/struts-tags"
+      version="2.1">
+    <jsp:directive.page contentType="application/voicexml+xml" />
+    <form id="intro">
+        <block>
+            <prompt>
+                Hello. This is One Bus Away.
+            </prompt>
+        </block>
+    </form>
+    <form id="stopCode">
+        <field name="stopCode">
+            <prompt>Please enter your four to seven digit stop code.</prompt>
+
+            <grammar xmlns="http://www.w3.org/2001/06/grammar" xml:lang="en-US" root="NUMBER" mode="dtmf"> 
+                <rule id="NUMBER" scope="public"> 
+                    <item repeat="4-7"> 
+                        <item> 
+                            <ruleref uri="#ZERO_TO_NINE_1"/> 
+                        </item> 
+                        <tag> out = out + rules.ZERO_TO_NINE_1.subSlot </tag> 
+                    </item> 
+                </rule> 
+
+                <rule id="ZERO_TO_NINE_1">  
+                    <one-of> 
+                        <item>0 <tag>out.subSlot="0";</tag></item> 
+                        <item>1 <tag>out.subSlot="1";</tag></item> 
+                        <item>2 <tag>out.subSlot="2";</tag></item> 
+                        <item>3 <tag>out.subSlot="3";</tag></item> 
+                        <item>4 <tag>out.subSlot="4";</tag></item> 
+                        <item>5 <tag>out.subSlot="5";</tag></item> 
+                        <item>6 <tag>out.subSlot="6";</tag></item> 
+                        <item>7 <tag>out.subSlot="7";</tag></item> 
+                        <item>8 <tag>out.subSlot="8";</tag></item> 
+                        <item>9 <tag>out.subSlot="9";</tag></item> 
+                    </one-of> 
+                </rule> 
+            </grammar> 
+
+            <filled>
+                <prompt>
+                    Stop <say-as interpret-as="digits"><value expr="stopCode"/></say-as>.
+                </prompt>
+
+                <s:url var="url" namespace="" action="stopSearch" />
+
+                <submit next="${url}" namelist="stopCode"  method="post"/>
+            </filled>
+        </field>
+    </form>
+    <form id="notFound">
+        <block>
+            <prompt>
+                Sorry, I couldn't find a stop with that code.
+            </prompt>
+            <goto next="#stopCode" />
+        </block>
+    </form>
+
+</vxml>
