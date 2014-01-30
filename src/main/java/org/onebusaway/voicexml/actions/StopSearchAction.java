@@ -17,15 +17,11 @@ package org.onebusaway.voicexml.actions;
 
 import com.google.common.collect.Iterables;
 import java.util.List;
-import org.onebusaway.nyc.presentation.model.SearchResult;
-import org.onebusaway.nyc.presentation.service.realtime.RealtimeService;
-import org.onebusaway.nyc.presentation.service.search.SearchResultFactory;
 import org.onebusaway.nyc.transit_data.services.NycTransitDataService;
 import org.onebusaway.nyc.util.configuration.ConfigurationService;
 import org.onebusaway.presentation.impl.NextActionSupport;
 import org.onebusaway.transit_data.model.SearchQueryBean;
 import org.onebusaway.transit_data.model.StopBean;
-import org.onebusaway.voicexml.model.StopResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -53,7 +49,7 @@ public class StopSearchAction extends NextActionSupport {
     public List<StopBean> getMatches() {
         return _matches;
     }
-    
+
     public String getStopId() {
         return _stopId;
     }
@@ -69,10 +65,8 @@ public class StopSearchAction extends NextActionSupport {
     @Override
     public String execute() {
         _matches = _nycTransitDataService.getStops(makeSearchQuery(_stopCode)).getStops();
-        
-        if (_matches.isEmpty()) {
-            return "showNotFound";
-        } else if (_matches.size() == 1) {
+
+        if (_matches.size() == 1) {
             _stopId = Iterables.getOnlyElement(_matches).getId();
             return "showStopResult";
         } else {

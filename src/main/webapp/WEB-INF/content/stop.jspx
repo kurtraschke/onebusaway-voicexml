@@ -52,7 +52,8 @@
                                 <break />
                             </s:iterator>
                         </s:iterator>
-                        <emphasis level="reduced">Check back shortly for an update</emphasis>
+                        <break strength="weak" />
+                        <emphasis level="reduced">Check back shortly for an update.</emphasis>
                     </s:if>
 
                     <s:if test="%{stopResult.routesWithNoScheduledService.size&gt;0}">
@@ -65,22 +66,15 @@
                         </s:iterator>
                     </s:if>
                 </s:else>
-
-                <!--
-                <s:if test="%{uniqueServiceAlertsForResults.size&gt;0}">
-                    <div class="alerts">
-                        <p>
-                            <strong>Service Alert:</strong>
-                        </p>
-                        <ul class="alerts">
-                    <c:forEach var="uniqueServiceAlert" items="${uniqueServiceAlertsForResults}">
-                        <li><c:out value="${uniqueServiceAlert}" escapeXml="false"/></li>
-                    </c:forEach>
-                </ul>
-            </div>
-                </s:if>
-                -->
             </prompt>
+        </block>
+        <block>
+            <s:if test="%{stopResult.uniqueServiceAlertsForResults.size&gt;0}">
+                <emphasis>Service Alert:</emphasis>
+                <c:forEach var="uniqueServiceAlert" items="${stopResult.uniqueServiceAlertsForResults}">
+                    <c:out value="${uniqueServiceAlert}" escapeXml="false"/><break />
+                </c:forEach>
+            </s:if>
         </block>
     </form>
 </vxml>

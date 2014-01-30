@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.onebusaway.voicexml.actions;
+package org.onebusaway.voicexml.impl;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -245,7 +245,7 @@ public class SearchResultFactoryImpl extends AbstractSearchResultFactoryImpl imp
     SiriDistanceExtension distanceExtension = wrapper.getDistances();
 
     String message = "";
-    String distance = "<strong>" + distanceExtension.getPresentableDistance() + "</strong>";
+    String distance = "<emphasis>" + distanceExtension.getPresentableDistance() + "</emphasis>";
 
     NaturalLanguageStringStructure progressStatus = journey.getProgressStatus();
 

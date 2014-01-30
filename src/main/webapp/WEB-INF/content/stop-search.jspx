@@ -24,21 +24,32 @@
       version="2.1">
     <jsp:directive.page contentType="application/voicexml+xml" />
     <form id="stopSearch">
+        <s:if test="%{matches.size == 0}">
+            <block id="notFound">
+                <prompt>
+                    <emphasis>Sorry, I couldn't find a stop with that code.</emphasis>
+                </prompt>
 
-        <field name="stopId">
-            <prompt>
-                <enumerate>
-                    For stop <value expr="_prompt"/>, press <value expr="_dtmf"/>.<break strength="weak" />
-                </enumerate>      
-            </prompt>
-            <s:iterator value="matches">
-                <option value="${id}"><s:property value="name" /></option>
-            </s:iterator>
-            <filled>
-                <s:url var="url" namespace="" action="stop" />
-                <submit next="${url}" namelist="stopId"  method="post"/>
-            </filled>
-        </field>
+                <s:url var="url" namespace="" action="index" anchor="stopEntry" />
+                <goto next="${url}" />
+            </block>
+        </s:if>
+        <s:else>
+            <menu id="stopId" dtmf="true">
+                <prompt>
+                    I found multiple stops matching that code.
+                    <enumerate>
+                        For stop <value expr="_prompt"/>, press <value expr="_dtmf"/>.<break strength="weak" />
+                    </enumerate>      
+                </prompt>
 
+                <s:iterator value="matches">
+                    <s:url var="url" namespace="" action="stop">
+                        <s:param name="stopId" value="%{url}" />
+                    </s:url>
+                    <choice next="${url}"><s:property value="name" /></choice>
+                </s:iterator>
+            </menu>
+        </s:else>
     </form>
 </vxml>

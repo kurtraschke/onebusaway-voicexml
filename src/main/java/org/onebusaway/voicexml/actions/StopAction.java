@@ -15,14 +15,12 @@
  */
 package org.onebusaway.voicexml.actions;
 
-import java.util.List;
-import org.onebusaway.nyc.presentation.model.SearchResult;
+import org.onebusaway.voicexml.impl.SearchResultFactoryImpl;
 import org.onebusaway.nyc.presentation.service.realtime.RealtimeService;
 import org.onebusaway.nyc.presentation.service.search.SearchResultFactory;
 import org.onebusaway.nyc.transit_data.services.NycTransitDataService;
 import org.onebusaway.nyc.util.configuration.ConfigurationService;
 import org.onebusaway.presentation.impl.NextActionSupport;
-import org.onebusaway.transit_data.model.SearchQueryBean;
 import org.onebusaway.transit_data.model.StopBean;
 import org.onebusaway.voicexml.model.StopResult;
 import org.springframework.beans.factory.annotation.Autowired;

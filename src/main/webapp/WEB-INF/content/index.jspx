@@ -27,9 +27,10 @@
             <prompt>
                 Hello. This is One Bus Away.
             </prompt>
+            <goto next="#stopEntry" />
         </block>
     </form>
-    <form id="stopCode">
+    <form id="stopEntry">
         <field name="stopCode">
             <prompt>Please enter your four to seven digit stop code.</prompt>
 
@@ -64,19 +65,9 @@
                     Stop <say-as interpret-as="digits"><value expr="stopCode"/></say-as>.
                 </prompt>
 
-                <s:url var="url" namespace="" action="stopSearch" />
-
+                <s:url var="url" namespace="" action="stop-search" />
                 <submit next="${url}" namelist="stopCode"  method="post"/>
             </filled>
         </field>
     </form>
-    <form id="notFound">
-        <block>
-            <prompt>
-                Sorry, I couldn't find a stop with that code.
-            </prompt>
-            <goto next="#stopCode" />
-        </block>
-    </form>
-
 </vxml>
